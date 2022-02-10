@@ -17,9 +17,8 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      PROJECT_ID: subtle-amulet-340
-      GAR_NAME: doc-regi
       PROJECT_ID: subtle-amulet-340607
+      GAR_NAME: doc-regi
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
