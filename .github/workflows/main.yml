@@ -30,7 +30,7 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
 
       - name: Build Docker Image
-        run: docker build -t $IMAGE_NAME:$GIT_TAG .
+        run: docker build -t citest:$GIT_TAG .
 
       - name: Configure Docker Client
         run: |-
@@ -40,4 +40,4 @@ jobs:
         run: docker images
 
       - name: Push Docker Image to GAR
-        run: docker push asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/$IMAGE_NAME:$GIT_TAG
+        run: docker push asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/citest:$GIT_TAG
