@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: citest
+  IMAGE_NAME: summerimg
   TAG: v4
   PROJECT_ID: subtle-amulet-340607
   GAR_NAME: doc-regi
