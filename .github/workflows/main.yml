@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_NAME: citest
-  TAG: v3
+  TAG: v4
   PROJECT_ID: subtle-amulet-340607
   GAR_NAME: doc-regi
 
@@ -33,7 +33,7 @@ jobs:
       # 저장소 명 저장
       - name: Output ArtifcatRegistry URL
         id: vars
-        run: echo ::set-output name=gar_url::asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/citest:$TAG
+        run: echo ::set-output name=gar_url::asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/summerimg:$TAG
 
       #저장명 확인
       - name: Test URL
@@ -60,6 +60,6 @@ jobs:
       - name: Deploy to Cloud Run.
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          service: docker-test
+          service: real-final
           region: asia-northeast3
-          image: asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/citest:${{ env.TAG }}
+          image: ${{ steps.vars.outputs.gar_url }}
