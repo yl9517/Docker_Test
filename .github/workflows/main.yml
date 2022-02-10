@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: citest
-  TAG: v2
+  TAG: v3
   PROJECT_ID: subtle-amulet-340607
   GAR_NAME: doc-regi
 
@@ -23,27 +23,41 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      #gcloud 설정
       - uses: google-github-actions/setup-gcloud@master
         with:
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
+      # 저장소 명 저장
       - name: Output ArtifcatRegistry URL
         id: vars
         run: echo ::set-output name=gar_url::asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/citest:$TAG
 
+      #저장명 확인
       - name: Test URL
         run: echo ${{ steps.vars.outputs.gar_url }}
 
+      #이미지 말기
       - name: Build Docker Image
         run: docker build -t ${{ steps.vars.outputs.gar_url }} .
 
+      # gar 사용자 인증설정
       - name: Configure Docker Client
         run: |-
           gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
 
+      #도커 이미지들 체크
       - name: Docker Images Check
         run: docker images
 
+      #gar에 도커이미지 올리기
       - name: Push Docker Image to GAR
         run: docker push ${{ steps.vars.outputs.gar_url }}
+
+      #Cloud Run에 배포
+      - name: Deploy with Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: quickstart-image
+          image: ${{ steps.vars.outputs.gar_url }}
