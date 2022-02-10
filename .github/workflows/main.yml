@@ -8,7 +8,9 @@ on:
 
 env:
   IMAGE_NAME: citest
-  GIT_TAG: v2
+  TAG: v2
+  PROJECT_ID: subtle-amulet-340607
+  GAR_NAME: doc-regi
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -16,9 +18,6 @@ jobs:
   build:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
-    env:
-      PROJECT_ID: subtle-amulet-340607
-      GAR_NAME: doc-regi
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,8 +28,15 @@ jobs:
           service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
+      - name: Output ArtifcatRegistry URL
+        id: vars
+        run: echo ::set-output name=gar_url::asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/citest:$TAG
+
+      - name: Test URL
+        run: echo ${{ steps.vars.outputs.gar_url }}
+
       - name: Build Docker Image
-        run: docker build -t citest:$GIT_TAG .
+        run: docker build -t ${{ steps.vars.outputs.gar_url }} .
 
       - name: Configure Docker Client
         run: |-
@@ -40,4 +46,4 @@ jobs:
         run: docker images
 
       - name: Push Docker Image to GAR
-        run: docker push asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/citest:$GIT_TAG
+        run: docker push ${{ steps.vars.outputs.gar_url }}
