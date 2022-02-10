@@ -8,6 +8,7 @@ on:
 
 env:
   IMAGE_NAME: dockertest
+  GIT_TAG: v2
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -35,9 +36,7 @@ jobs:
           gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
 
       - name: Push Docker Image to GAR
-        env:
-          GIT_TAG: v2
         run: |-
-          docker tag asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:latest
-          docker tag asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:$GIT_TAG
+          docker tag asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:latest \
+            asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:$GIT_TAG
           docker push asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:$GIT_TAG
