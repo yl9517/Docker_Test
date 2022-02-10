@@ -36,5 +36,8 @@ jobs:
         run: |-
           gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
 
+      - name: Docker Images Check
+        run: docker images
+
       - name: Push Docker Image to GAR
         run: docker push asia-northeast3-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/$IMAGE_NAME:$GIT_TAG
