@@ -37,6 +37,6 @@ jobs:
 
       - name: Push Docker Image to GAR
         run: |-
-          docker tag asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:latest \
+          docker tag asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:v1 \
             asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:$GIT_TAG
           docker push asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/dockertest:$GIT_TAG
