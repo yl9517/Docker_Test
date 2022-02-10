@@ -61,4 +61,5 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v0
         with:
           service: docker-test
+          region: asia-northeast3
           image: asia-northeast3-docker.pkg.dev/subtle-amulet-340607/doc-regi/citest:${{ env.TAG }}
