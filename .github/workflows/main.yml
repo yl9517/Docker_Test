@@ -9,7 +9,7 @@ on:
 
 env:
   IMAGE_NAME: summerimg
-  TAG: v4
+  TAG: v6
   PROJECT_ID: subtle-amulet-340607
   GAR_NAME: doc-regi
 
